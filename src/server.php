@@ -20,7 +20,11 @@ $dotenv->load();
 $http = new swoole_http_server('127.0.0.1', 9501, SWOOLE_BASE);
 $http->on(
     'request', function ($req, $resp) {
-        $processingRequest = new ProcessingRequest($req, $resp);
+        go(
+            function () use ($req, $resp) {
+                $processingRequest = new ProcessingRequest($req, $resp);
+            }
+        );
     }
 );
 
