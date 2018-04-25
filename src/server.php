@@ -17,7 +17,7 @@ use Klein\Klein;
 $dotenv = new Dotenv\Dotenv(implode(DIRECTORY_SEPARATOR, [__DIR__, '..']));
 $dotenv->load();
 
-$http = new swoole_http_server('127.0.0.1', 9501, SWOOLE_BASE);
+$http = new swoole_http_server($_ENV['http_host'], $_ENV['http_port'], SWOOLE_BASE);
 $http->set(
     [
         'daemonize' => true,
