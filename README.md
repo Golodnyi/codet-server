@@ -1,5 +1,6 @@
 # Install
 
+- install swoole extension (https://github.com/swoole/swoole-src)
 - cd /opt && git clone https://github.com/codet-app/codet-server.git
 - cd /opt/codet-server && composer install
 - cp /opt/codet-server/.env.example /opt/codet-server/.env
