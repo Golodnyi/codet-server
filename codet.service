@@ -6,7 +6,7 @@ After=syslog.target
 [Service]
 Type=forking
 PIDFile=/opt/codet-server/codet-server.pid
-ExecStart=/bin/php /opt/codet-servers/src/server.php
+ExecStart=/bin/php /opt/codet-server/src/server.php
 ExecStop=/bin/kill $MAINPID
 ExecReload=/bin/kill -USR1 $MAINPID
 Restart=always
