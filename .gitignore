@@ -2,4 +2,5 @@ vendor
 .env
 composer.lock
 storage/*
+!storage/.gitkeep
 codet-server.pid
