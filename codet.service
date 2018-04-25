@@ -1,0 +1,15 @@
+[Unit]
+Description=Codet Http Server
+After=network.target
+After=syslog.target
+
+[Service]
+Type=forking
+PIDFile=/opt/codet-server/codet-server.pid
+ExecStart=/bin/php /opt/codet-servers/src/server.php
+ExecStop=/bin/kill $MAINPID
+ExecReload=/bin/kill -USR1 $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target graphical.target

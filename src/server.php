@@ -18,6 +18,13 @@ $dotenv = new Dotenv\Dotenv(implode(DIRECTORY_SEPARATOR, [__DIR__, '..']));
 $dotenv->load();
 
 $http = new swoole_http_server('127.0.0.1', 9501, SWOOLE_BASE);
+$http->set(
+    [
+        'daemonize' => true,
+        'pid_file' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'codet-server.pid'
+    ]
+);
+
 $http->on(
     'request', function ($req, $resp) {
         go(
