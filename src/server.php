@@ -17,15 +17,20 @@ use Klein\Klein;
 $dotenv = new Dotenv\Dotenv(implode(DIRECTORY_SEPARATOR, [__DIR__, '..']));
 $dotenv->load();
 
-$http = new swoole_http_server($_ENV['http_host'], $_ENV['http_port'], SWOOLE_BASE);
-$http->set(
-    [
-        'daemonize' => true,
-        'pid_file' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'codet-server.pid'
-    ]
-);
+$server = new swoole_websocket_server($_ENV['http_host'], $_ENV['http_port'], SWOOLE_BASE);
 
-$http->on(
+if ((int)$_ENV['daemonize']) {
+    $server->set(
+        [
+            'daemonize' => true,
+            'pid_file' => $_ENV['pid']
+        ]
+    );
+}
+/**
+ * HTTP
+ */
+$server->on(
     'request', function ($req, $resp) {
         go(
             function () use ($req, $resp) {
@@ -35,4 +40,22 @@ $http->on(
     }
 );
 
-$http->start();
+/**
+ * WebSocket
+ */
+$server->on(
+    'open', function ($server, $req) {
+    }
+);
+
+$server->on(
+    'message', function ($server, $frame) {
+    }
+);
+
+$server->on(
+    'close', function ($server, $fd) {
+    }
+);
+
+$server->start();
