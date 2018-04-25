@@ -8,7 +8,7 @@
  * @package  Codet
  * @author   Golodnyi <ochen@golodnyi.ru>
  * @license  https://opensource.org/licenses/MIT MIT
- * @link     https://github.com/Golodnyi/codet.git
+ * @link     https://github.com/codet-app/codet-server
  */
 require_once __DIR__ . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['..', 'vendor', 'autoload.php']);
 use Codet\Http\ProcessingRequest;
