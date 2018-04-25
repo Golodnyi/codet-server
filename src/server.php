@@ -15,6 +15,7 @@ use Codet\Http\ProcessingRequest as PRHttp;
 use Codet\WebSocket\ProcessingRequest as PRWss;
 use Codet\WebSocket\Classes\Clients;
 use Klein\Klein;
+use Codet\WebSocket\Classes\Chat;
 
 $dotenv = new Dotenv\Dotenv(implode(DIRECTORY_SEPARATOR, [__DIR__, '..']));
 $dotenv->load();
@@ -63,7 +64,7 @@ $server->on(
 
 $server->on(
     'close', function ($server, $fd) use ($test) {
-        Clients::delete($fd);
+        Chat::leave($server, $fd);
     }
 );
 

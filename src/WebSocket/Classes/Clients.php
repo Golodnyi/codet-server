@@ -120,4 +120,24 @@ class Clients
 
         return false;
     }
+
+    /**
+     * Get channel by fd
+     *
+     * @param [type] $fd fd
+     * 
+     * @return string|bool
+     */
+    public static function getChannel($fd)
+    {
+        foreach (self::list() as $channel => $data) {
+            foreach ($data as $key => $clientData) {
+                if ($clientData['id'] === $fd) {
+                    return $channel;
+                }
+            }
+        }
+
+        return false;
+    }
 }

@@ -137,4 +137,47 @@ class Chat
             );
         }
     }
+
+    /**
+     * Leave to channel
+     *
+     * @param [type] $server server
+     * @param [type] $fd     fd
+     * 
+     * @return void
+     */
+    public static function leave($server, $fd)
+    {
+        if (!$channel = Clients::getChannel($fd)) {
+            return false;
+        }
+
+        foreach (Clients::list($channel) as $clientData) {
+
+            if ($clientData['id'] === $fd) {
+                continue;
+            }
+
+            if (!$server->exist($clientData['id'])) {
+                Clients::delete($clientData['id']);
+                continue;
+            }
+
+            if (!$client = Clients::getClient($fd)) {
+                return false;
+            }
+
+            $server->push(
+                $clientData['id'], json_encode(
+                    [
+                        'name' => 'System',
+                        'message' => $client['name'] . ' leave from channel',
+                        'type' => 0
+                    ]
+                )
+            );
+
+            Clients::delete($fd);
+        }
+    }
 }
