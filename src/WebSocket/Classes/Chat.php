@@ -155,7 +155,7 @@ class Chat
             return false;
         }
 
-        self::_saveMessage($data->channel, 'System', $client['name'] . ' join to channel');
+        // self::_saveMessage($data->channel, 'System', $client['name'] . ' join to channel');
         
         foreach (Clients::list($data->channel) as $clientData) {
 
@@ -198,7 +198,7 @@ class Chat
             return false;
         }
 
-        self::_saveMessage($channel, 'System', $client['name'] . ' leave from channel');
+        // self::_saveMessage($channel, 'System', $client['name'] . ' leave from channel');
 
         foreach (Clients::list($channel) as $clientData) {
 
