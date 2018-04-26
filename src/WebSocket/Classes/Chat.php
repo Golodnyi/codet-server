@@ -109,6 +109,12 @@ class Chat
             return false;
         }
 
+        if (!mb_strlen($data->message)) {
+            return false;
+        } else if (mb_strlen($data->message) > 256) {
+            $data->message = mb_substr($data->message, 0, 256);
+        }
+
         self::_saveMessage($data->channel, $client['name'], $data->message);
 
         foreach (Clients::list($data->channel) as $clientData) {
