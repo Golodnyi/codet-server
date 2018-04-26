@@ -198,8 +198,7 @@ class Chat
             return false;
         }
 
-
-        self::_saveMessage($channel, 'System', $client['name'] . ' join to channel');
+        self::_saveMessage($channel, 'System', $client['name'] . ' leave from channel');
 
         foreach (Clients::list($channel) as $clientData) {
 
