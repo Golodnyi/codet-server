@@ -27,6 +27,16 @@ use Codet\WebSocket\Classes\Clients;
  */
 class Chat
 {
+    private static $_storage = __DIR__ . 
+        DIRECTORY_SEPARATOR . 
+        '..' . 
+        DIRECTORY_SEPARATOR . 
+        '..' . 
+        DIRECTORY_SEPARATOR .
+        '..' .
+        DIRECTORY_SEPARATOR .
+        'storage';
+
     /**
      * __construct
      *
@@ -57,6 +67,34 @@ class Chat
     }
 
     /**
+     * Save chat message to json file
+     *
+     * @param [type] $channel channel
+     * @param [type] $name    name
+     * @param [type] $message message
+     * 
+     * @return void
+     */
+    private static function _saveMessage($channel, $name, $message)
+    {
+        $storageFile = self::$_storage . DIRECTORY_SEPARATOR . mb_substr($channel, 0, 5) . DIRECTORY_SEPARATOR . mb_substr($channel, 5, 8) . '.json';
+
+        if (file_exists($storageFile)) {
+            
+            $dataStorageFile = file_get_contents($storageFile);
+            if ($array = json_decode($dataStorageFile, true)) {
+                
+                $array['chat'][] = [
+                    'name' => $name,
+                    'message' => $message,
+                ];
+
+                file_put_contents($storageFile, json_encode($array));
+            }
+        }
+    }
+
+    /**
      * Broadcasting messages
      *
      * @param [type] $server server
@@ -67,14 +105,16 @@ class Chat
      */
     private function _broadcastMessages($server, $frame, $data)
     {
+        if (!$client = Clients::getClient($frame->fd)) {
+            return false;
+        }
+
+        self::_saveMessage($data->channel, $client['name'], $data->message);
+
         foreach (Clients::list($data->channel) as $clientData) {
             if (!$server->exist($clientData['id'])) {
                 Clients::delete($clientData['id']);
                 continue;
-            }
-
-            if (!$client = Clients::getClient($frame->fd)) {
-                return false;
             }
 
             $server->push(
@@ -111,6 +151,12 @@ class Chat
             )
         );
 
+        if (!$client = Clients::getClient($frame->fd)) {
+            return false;
+        }
+
+        self::_saveMessage($data->channel, 'System', $client['name'] . ' join to channel');
+        
         foreach (Clients::list($data->channel) as $clientData) {
 
             if ($clientData['id'] === $frame->fd) {
@@ -120,10 +166,6 @@ class Chat
             if (!$server->exist($clientData['id'])) {
                 Clients::delete($clientData['id']);
                 continue;
-            }
-
-            if (!$client = Clients::getClient($frame->fd)) {
-                return false;
             }
 
             $server->push(
@@ -152,6 +194,13 @@ class Chat
             return false;
         }
 
+        if (!$client = Clients::getClient($fd)) {
+            return false;
+        }
+
+
+        self::_saveMessage($channel, 'System', $client['name'] . ' join to channel');
+
         foreach (Clients::list($channel) as $clientData) {
 
             if ($clientData['id'] === $fd) {
@@ -161,10 +210,6 @@ class Chat
             if (!$server->exist($clientData['id'])) {
                 Clients::delete($clientData['id']);
                 continue;
-            }
-
-            if (!$client = Clients::getClient($fd)) {
-                return false;
             }
 
             $server->push(

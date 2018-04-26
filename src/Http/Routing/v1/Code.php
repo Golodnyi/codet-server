@@ -26,19 +26,9 @@ namespace Codet\Http\Routing;
 class Code
 {
     private $_storage;
-
+    
     /**
-     * All options requests
-     * 
-     * Set storage
-     */
-    public function options($req, $resp, $vars): string
-    {
-        return json_encode([]);
-    }
-
-    /**
-     * __cinstruct
+     * __construct
      * 
      * Set storage
      */
