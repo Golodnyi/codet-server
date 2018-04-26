@@ -81,6 +81,14 @@ class Code
             $data['pwd'] = password_hash(trim($data['pwd']), PASSWORD_DEFAULT);
         }
 
+        if (mb_strlen($data['comment']) > 1024) {
+            $data['comment'] = mb_strlen($data['comment'], 0, 1024);
+        }
+
+        if (mb_strlen($data['code']) > 10240) {
+            $data['code'] = mb_strlen($data['code'], 0, 10240);
+        }
+
         if (!file_put_contents($folder . DIRECTORY_SEPARATOR . mb_substr($code, 5, 8) . '.json', json_encode($data))) {
             $req->status(500);
             return json_encode(['result' => 'cannot create json file']);
