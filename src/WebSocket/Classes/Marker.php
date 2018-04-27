@@ -97,7 +97,6 @@ class Marker
                             'column' => $column,
                         ];
                     }
-                    var_dump($array['markers']);
                 } else {
                     $array['markers'][] = [
                         'name' => $name,
