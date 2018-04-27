@@ -82,15 +82,15 @@ class Marker
                 $exist = false;
                 $key = array_search($lineNumber, array_column($array['markers'], 'lineNumber'));
 
-                if ($key) {
-                    $array['markers'][$key] = [
+                if ($key === false) {
+                    $array['markers'][] = [
                         'name' => $name,
                         'message' => $message,
                         'lineNumber' => $lineNumber,
                         'column' => $column,
                     ];
                 } else {
-                    $array['markers'][] = [
+                    $array['markers'][$key] = [
                         'name' => $name,
                         'message' => $message,
                         'lineNumber' => $lineNumber,
