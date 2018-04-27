@@ -54,7 +54,7 @@ class Marker
         }
         switch ($data->type) {
         case 2:
-            $this->_broadcastMessages($server, $frame, $data);
+            $this->_broadcastMarkers($server, $frame, $data);
             break;
         default: 
             break;
@@ -72,22 +72,31 @@ class Marker
      * 
      * @return void
      */
-    private static function _saveMessage($channel, $name, $message, $lineNumber, $column)
+    private static function _saveMarker($channel, $name, $message, $lineNumber, $column)
     {
         $storageFile = self::$_storage . DIRECTORY_SEPARATOR . mb_substr($channel, 0, 5) . DIRECTORY_SEPARATOR . mb_substr($channel, 5, 8) . '.json';
 
         if (file_exists($storageFile)) {
-            
             $dataStorageFile = file_get_contents($storageFile);
             if ($array = json_decode($dataStorageFile, true)) {
-                
-                $array['markers'][] = [
-                    'name' => $name,
-                    'message' => $message,
-                    'lineNumber' => $lineNumber,
-                    'column' => $column,
-                ];
+                $exist = false;
+                $key = array_search($lineNumber, array_column($array['markers'], 'lineNumber'));
 
+                if ($key) {
+                    $array['markers'][$key] = [
+                        'name' => $name,
+                        'message' => $message,
+                        'lineNumber' => $lineNumber,
+                        'column' => $column,
+                    ];
+                } else {
+                    $array['markers'][] = [
+                        'name' => $name,
+                        'message' => $message,
+                        'lineNumber' => $lineNumber,
+                        'column' => $column,
+                    ];
+                }
                 file_put_contents($storageFile, json_encode($array));
             }
         }
@@ -102,7 +111,7 @@ class Marker
      * 
      * @return void
      */
-    private function _broadcastMessages($server, $frame, $data)
+    private function _broadcastMarkers($server, $frame, $data)
     {
         if (!$client = Clients::getClient($frame->fd)) {
             return false;
@@ -114,7 +123,7 @@ class Marker
             $data->message = mb_substr($data->message, 0, 200);
         }
 
-        self::_saveMessage($data->channel, $client['name'], $data->message, $data->lineNumber, $data->column);
+        self::_saveMarker($data->channel, $client['name'], $data->message, $data->lineNumber, $data->column);
 
         foreach (Clients::list($data->channel) as $clientData) {
             if (!$server->exist($clientData['id'])) {
