@@ -13,6 +13,7 @@
 namespace Codet\WebSocket;
 
 use Codet\WebSocket\Classes\Chat;
+use Codet\WebSocket\Classes\Marker;
 /**
  * Processing Request
  * 
@@ -34,6 +35,22 @@ class ProcessingRequest
      */
     public function __construct($server, $frame)
     {
-        $chat = new Chat($server, $frame);
+        if (!$data = json_decode($frame->data)) {
+            return false;
+        }
+        switch($data->type) {
+        case 0:
+                new Chat($server, $frame);
+            break;
+        case 1:
+                new Chat($server, $frame);
+            break;
+        case 2:
+                new Marker($server, $frame);
+            break;
+        defualt:
+            break;
+
+        }
     }
 }

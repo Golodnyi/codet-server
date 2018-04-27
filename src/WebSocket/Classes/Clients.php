@@ -118,7 +118,7 @@ class Clients
             }
         }
 
-        return false;
+        return [];
     }
 
     /**
