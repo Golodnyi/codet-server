@@ -110,8 +110,8 @@ class Marker
 
         if (!mb_strlen($data->message)) {
             return false;
-        } else if (mb_strlen($data->message) > 256) {
-            $data->message = mb_substr($data->message, 0, 256);
+        } else if (mb_strlen($data->message) > 200) {
+            $data->message = mb_substr($data->message, 0, 200);
         }
 
         self::_saveMessage($data->channel, $client['name'], $data->message, $data->lineNumber, $data->column);
