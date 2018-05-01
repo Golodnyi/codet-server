@@ -79,32 +79,28 @@ class Marker
         if (file_exists($storageFile)) {
             $dataStorageFile = file_get_contents($storageFile);
             if ($array = json_decode($dataStorageFile, true)) {
+                $key = false;
+
                 if (isset($array['markers'])) {
                     $key = array_search($lineNumber, array_column($array['markers'], 'lineNumber'));
+                }
 
-                    if ($key === false) {
-                        $array['markers'][] = [
-                            'name' => $name,
-                            'message' => $message,
-                            'lineNumber' => $lineNumber,
-                            'column' => $column,
-                        ];
-                    } else {
-                        $array['markers'][$key] = [
-                            'name' => $name,
-                            'message' => $message,
-                            'lineNumber' => $lineNumber,
-                            'column' => $column,
-                        ];
-                    }
-                } else {
+                if ($key === false) {
                     $array['markers'][] = [
                         'name' => $name,
                         'message' => $message,
                         'lineNumber' => $lineNumber,
                         'column' => $column,
                     ];
+                } else {
+                    $array['markers'][$key] = [
+                        'name' => $name,
+                        'message' => $message,
+                        'lineNumber' => $lineNumber,
+                        'column' => $column,
+                    ];
                 }
+          
                 file_put_contents($storageFile, json_encode($array));
             }
         }
