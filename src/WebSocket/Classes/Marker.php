@@ -76,7 +76,7 @@ class Marker
     {
         $storageFile = self::$_storage . DIRECTORY_SEPARATOR . mb_substr($channel, 0, 5) . DIRECTORY_SEPARATOR . mb_substr($channel, 5, 8) . '.json';
 
-        if (file_exists($storageFile)) {
+        if (!file_exists($storageFile)) {
             return false;
         }
         

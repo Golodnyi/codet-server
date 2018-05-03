@@ -82,11 +82,11 @@ class Code
         }
 
         if (mb_strlen($data['comment']) > 1024) {
-            $data['comment'] = mb_strlen($data['comment'], 0, 1024);
+            $data['comment'] = mb_substr($data['comment'], 0, 1024);
         }
-
-        if (mb_strlen($data['code']) > 10240) {
-            $data['code'] = mb_strlen($data['code'], 0, 10240);
+        
+        if (mb_strlen($data['code']) > 65535) {
+            $data['code'] = mb_substr($data['code'], 0, 65535);
         }
 
         if (!file_put_contents($folder . DIRECTORY_SEPARATOR . mb_substr($code, 5, 8) . '.json', json_encode($data))) {
