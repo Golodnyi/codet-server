@@ -37,6 +37,9 @@ class Marker
         DIRECTORY_SEPARATOR .
         'storage';
 
+    public function __destruct()
+    {
+    }
     /**
      * __construct
      *

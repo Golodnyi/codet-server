@@ -31,6 +31,10 @@ abstract class Request
     protected $method;
     protected $uri;
 
+    public function __destruct()
+    {
+    }
+
     /**
      * __construct
      *

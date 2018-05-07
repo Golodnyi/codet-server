@@ -26,7 +26,10 @@ namespace Codet\Http\Routing;
 class Code
 {
     private $_storage;
-    
+
+    public function __destruct()
+    {
+    }
     /**
      * __construct
      * 

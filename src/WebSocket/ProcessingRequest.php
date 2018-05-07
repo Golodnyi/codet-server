@@ -27,6 +27,9 @@ use Codet\WebSocket\Classes\Marker;
  */
 class ProcessingRequest
 {
+    public function __destruct()
+    {
+    }
     /**
      * __construct
      *

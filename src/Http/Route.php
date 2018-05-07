@@ -30,6 +30,11 @@ use Exception;
 class Route extends Request
 {
     private $_dispatcher;
+
+    public function __destruct()
+    {
+        parent::__destruct();
+    }
     /**
      * __construct
      *

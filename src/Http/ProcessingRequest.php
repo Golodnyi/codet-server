@@ -27,6 +27,10 @@ use Codet\Http\Classes\Request;
  */
 class ProcessingRequest extends Request
 {
+    public function __destruct()
+    {
+        parent::__destruct();
+    }
     /**
      * __construct
      *
@@ -36,6 +40,6 @@ class ProcessingRequest extends Request
     public function __construct($req, $resp)
     {
         parent::__construct($req, $resp);
-        $router = new Route($req, $resp);
+        new Route($req, $resp);
     }
 }

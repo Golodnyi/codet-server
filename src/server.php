@@ -37,7 +37,7 @@ $server->on(
     'request', function ($req, $resp) {
         go(
             function () use ($req, $resp) {
-                $processingRequest = new PRHttp($req, $resp);
+                new PRHttp($req, $resp);
             }
         );
     }
@@ -56,7 +56,7 @@ $server->on(
     'message', function ($server, $frame) {
         go(
             function () use ($server, $frame) {
-                $processingRequest = new PRWss($server, $frame);
+                new PRWss($server, $frame);
             }
         );
     }
